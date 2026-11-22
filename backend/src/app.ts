@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import { pool } from "./config/db";
+import taskRoutes from "./routes/task.routes";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.get("/api/health", async (req: Request, res: Response, next: NextFunction) =
     next(err);
   }
 });
+app.use("/api/tasks", taskRoutes);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err);
