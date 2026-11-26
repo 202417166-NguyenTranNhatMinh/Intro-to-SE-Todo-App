@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import { pool } from "./config/db";
 import { env } from "./config/env";
 import authRoutes from "./routes/authRoutes";
+import taskRoutes from "./routes/taskRoutes";
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.get(
 );
 
 app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
 
 app.use(
   (err: Error, req: Request, res: Response, next: NextFunction) => {
