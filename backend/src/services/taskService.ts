@@ -1,3 +1,5 @@
+import { AppError } from "../utils/AppError";
+import type { TaskStatus } from "../contracts/task";
 import {
   insertTask,
   findTasksByUser,
@@ -9,9 +11,9 @@ import {
 } from "../repo/taskRepo";
 
 
-export class TaskValidationError extends Error {
+export class TaskValidationError extends AppError {
   constructor(message: string) {
-    super(message);
+    super(400, message);
     this.name = "TaskValidationError";
   }
 }
@@ -24,7 +26,6 @@ export function validateTaskTitle(title: unknown): string {
   return title.trim();
 }
 
-export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 
 export function validateTaskStatus(status: unknown): TaskStatus {
   if (status === undefined) {

@@ -1,8 +1,7 @@
 import type { AuthUser } from "./types";
 
-type CurrentUserResponse = {
-  user: AuthUser;
-};
+type ApiResponse<T> = { status: number; message: string; data: T | null };
+type CurrentUserResponse = { user: AuthUser };
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
   const response = await fetch("/api/auth/me", {
@@ -17,8 +16,9 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     throw new Error(`Could not load your account (HTTP ${response.status}).`);
   }
 
-  const result = (await response.json()) as CurrentUserResponse;
-  return result.user;
+  const result = (await response.json()) as ApiResponse<CurrentUserResponse>;
+  if (!result.data) throw new Error("Account response is missing data.");
+  return result.data.user;
 }
 
 export function startGoogleLogin() {
