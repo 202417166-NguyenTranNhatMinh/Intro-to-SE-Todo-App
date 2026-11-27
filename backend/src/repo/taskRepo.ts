@@ -1,17 +1,9 @@
 
 import { pool } from "../config/db";
-import type { TaskStatus } from "../services/taskService";
+import type { TaskStatus, TaskResponse } from "../contracts/task";
 
 // Kiểu dữ liệu Task trả về cho API Sprint 1
-export type Task = {
-  id: string;
-  title: string;
-  description: string | null;
-  status: TaskStatus;
-  dueDate: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export type Task = Omit<TaskResponse, "createdAt" | "updatedAt"> & { createdAt: Date; updatedAt: Date };
 
 // Dữ liệu đầu vào để tạo Task
 export type CreateTaskInput = {

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
+import { AppError } from "../utils/AppError";
 
 export type AuthenticatedRequest = Request & {
   userId?: string;
@@ -14,7 +15,7 @@ export function requireAuth(
   const token = req.cookies.session;
 
   if (!token) {
-    return res.status(401).json({ message: "Authentication required" });
+    return next(AppError.unauthorized());
   }
 
   try {
@@ -22,6 +23,6 @@ export function requireAuth(
     req.userId = payload.userId;
     next();
   } catch {
-    return res.status(401).json({ message: "Invalid or expired session" });
+    return next(AppError.unauthorized("Invalid or expired session"));
   }
 }

@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import crypto from "crypto";
 import { env } from "../config/env";
+import { AppError } from "../utils/AppError";
+import { sendSuccess } from "../utils/response";
 import {
   createGoogleAuthorizationUrl,
   signInWithGoogleCode,
@@ -65,10 +67,10 @@ export async function getCurrentUser(
     const user = await findUserById(req.userId!);
 
     if (!user) {
-      return res.status(401).json({ message: "User no longer exists" });
+      throw AppError.unauthorized("User no longer exists");
     }
 
-    return res.json({ user });
+    return sendSuccess(res, { user });
   } catch (error) {
     next(error);
   }

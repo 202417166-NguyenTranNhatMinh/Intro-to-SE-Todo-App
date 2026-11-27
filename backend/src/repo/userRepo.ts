@@ -7,12 +7,7 @@ export type GoogleUser = {
   avatarUrl: string | null;
 };
 
-export type AppUser = {
-  id: string;
-  email: string;
-  displayName: string;
-  avatarUrl: string | null;
-};
+export type AppUser = import("../contracts/auth").AuthUser;
 
 export async function upsertGoogleUser(user: GoogleUser): Promise<AppUser> {
   const result = await pool.query<AppUser>(
