@@ -50,7 +50,7 @@ export async function googleCallback(
       path: "/",
     });
 
-    return res.redirect(env.frontendUrl);
+    return res.redirect(`${env.frontendUrl}/login`);
   } catch (error) {
     next(error);
   }
